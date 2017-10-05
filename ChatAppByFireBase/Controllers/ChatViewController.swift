@@ -77,6 +77,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         collectionView.register(ChatCollectionViewCell.self, forCellWithReuseIdentifier: self.cellId)
         collectionView.backgroundColor = UIColor.white
         collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
+        collectionView.keyboardDismissMode = .interactive
         return collectionView
     }()
     
@@ -86,6 +87,11 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         //Adding Observer for Keyboard so that the inputTextField can raise up and drop down depend on keyboard animation
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow(note: )), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide(note: )), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidLoad() {

@@ -26,12 +26,15 @@ extension ChatViewController{
                         print((error?.localizedDescription)!)
                         return
                     }
-                    
-                    let senderReference = FIRDatabase.database().reference().child("user-message").child(fromId!)
+                    //Create Sub Node For Chat
+                    //For Example: A -> Message -> B
+                    //New Node Tree: user-message -> A -> B -> [Message]
+                    //               user-message -> B -> A -> [Message] as well
+                    let senderReference = FIRDatabase.database().reference().child("user-message").child(fromId!).child(toId!)
                     let childId = childMessageId.key
                     senderReference.updateChildValues([childId: 1])
                     
-                    let receiverReference = FIRDatabase.database().reference().child("user-message").child(toId!)
+                    let receiverReference = FIRDatabase.database().reference().child("user-message").child(toId!).child(fromId!)
                     receiverReference.updateChildValues([childId: 1])
                 })
                 
@@ -57,13 +60,12 @@ extension ChatViewController{
     }
     
     func getNewMessageFromFirebase(){
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else {
+        guard let uid = FIRAuth.auth()?.currentUser?.uid, let userId = self.userData["uuid"] else {
             return
         }
         
-        let ref = FIRDatabase.database().reference().child("user-message").child(uid)
+        let ref = FIRDatabase.database().reference().child("user-message").child(uid).child(userId)
         ref.observe(.childAdded, with: { (snapShot) in
-            
             let messageId = snapShot.key
             let messageRef = FIRDatabase.database().reference().child("message").child(messageId)
             messageRef.observeSingleEvent(of: .value, with: { (snapShot) in

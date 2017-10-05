@@ -20,28 +20,32 @@ extension ViewController{
         let ref = FIRDatabase.database().reference().child("user-message").child(uuid)
         ref.observe(.childAdded, with: { (snapShot) in
             
-            let messageId = snapShot.key
-            let newRef = FIRDatabase.database().reference().child("message").child(messageId)
-            newRef.observeSingleEvent(of: .value, with: { (snapShot) in
-                
-                if let messageDict = snapShot.value as? [String: AnyObject]{
-                    let messageModel = Message()
-                    messageModel.setValuesForKeys(messageDict)
+            let userId = snapShot.key
+            ref.child(userId).observe(.childAdded, with: { (snapShot) in
+                let messageId = snapShot.key
+                let newRef = FIRDatabase.database().reference().child("message").child(messageId)
+                newRef.observeSingleEvent(of: .value, with: { (snapShot) in
                     
-                    if let toId = messageModel.getRealReceiverId(){
-                        self.messageDictonary[toId] = messageModel
-                        self.messages = Array(self.messageDictonary.values)
+                    if let messageDict = snapShot.value as? [String: AnyObject]{
+                        let messageModel = Message()
+                        messageModel.setValuesForKeys(messageDict)
                         
-                        //Keep the lastest message on the top base on timeStamp
-                        self.messages.sort(by: { (message1, message2) -> Bool in
-                            return Double(message1.timeStamp!)! > Double(message2.timeStamp!)!
-                        })
-                        
-                        self.timer?.invalidate()
-                        
-                        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                        if let toId = messageModel.getRealReceiverId(){
+                            self.messageDictonary[toId] = messageModel
+                            self.messages = Array(self.messageDictonary.values)
+                            
+                            //Keep the lastest message on the top base on timeStamp
+                            self.messages.sort(by: { (message1, message2) -> Bool in
+                                return Double(message1.timeStamp!)! > Double(message2.timeStamp!)!
+                            })
+                            
+                            self.timer?.invalidate()
+                            
+                            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReloadTable), userInfo: nil, repeats: false)
+                        }
                     }
-                }
+                }, withCancel: nil)
+
             }, withCancel: nil)
             
         }, withCancel:nil)

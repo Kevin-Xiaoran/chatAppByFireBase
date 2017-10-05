@@ -37,9 +37,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         setUpMessageTableView()
         getNewMessageFromFireBase()
         
+        //Check if user has logged in or not
         if FIRAuth.auth()?.currentUser?.uid == nil {
+            //No one has logged in
             logoutButtonPressed()
         }else{
+            //Some one successfully login
             fetchCurrentUserData()
         }
         
@@ -76,6 +79,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let singleMessage = self.messages[indexPath.row]
         
         if let toId = singleMessage.getRealReceiverId(){
+            //Get user data base on user id
             let toRef = FIRDatabase.database().reference().child("User").child(toId)
             toRef.observeSingleEvent(of: .value, with: { (snapShot) in
                 if let userData = snapShot.value as? [String: String]{

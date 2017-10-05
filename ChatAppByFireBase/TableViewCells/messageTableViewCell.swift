@@ -45,7 +45,7 @@ class messageTableViewCell: UserListTableViewCell {
         
         let date = NSDate(timeIntervalSince1970: Double(timeStamp)!)
         let dateFormmater = DateFormatter()
-        dateFormmater.dateFormat = "hh:mm:ss a"
+        dateFormmater.dateFormat = "hh:mm a"
         timeStampLabel.text = dateFormmater.string(from: date as Date)
     }
 

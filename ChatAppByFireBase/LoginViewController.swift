@@ -10,7 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate{
     var textFieldHeight: CGFloat = 50
-    var textFieldContainerHeight: CGFloat = 200
+    var textFieldContainerHeight: CGFloat = 150
     
     weak var mainViewController: ViewController?
     
@@ -78,12 +78,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
         return line
     }()
     
-    let confirmedPasswordTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Re-enter Your Password"
-        textField.isSecureTextEntry = true
-        return textField
-    }()
+//    let confirmedPasswordTextField: UITextField = {
+//        let textField = UITextField()
+//        textField.placeholder = "Re-enter Your Password"
+//        textField.isSecureTextEntry = true
+//        return textField
+//    }()
     
     let textFieldBackView: UIView = {
         let littleView = UIView()

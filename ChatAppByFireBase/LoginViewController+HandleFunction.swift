@@ -23,10 +23,10 @@ extension LoginViewController: UINavigationControllerDelegate, UIImagePickerCont
                 Height(0)
             ]
             
-            confirmedPasswordTextField.placeholder = ""
-            confirmedPasswordTextField <- [
-                Height(0)
-            ]
+//            confirmedPasswordTextField.placeholder = ""
+//            confirmedPasswordTextField <- [
+//                Height(0)
+//            ]
             
             lineOne <- [
                 Height(0)
@@ -47,10 +47,10 @@ extension LoginViewController: UINavigationControllerDelegate, UIImagePickerCont
                 Height(textFieldHeight)
             ]
             
-            confirmedPasswordTextField.placeholder = "Re-enter Your Password"
-            confirmedPasswordTextField <- [
-                Height(textFieldHeight)
-            ]
+//            confirmedPasswordTextField.placeholder = "Re-enter Your Password"
+//            confirmedPasswordTextField <- [
+//                Height(textFieldHeight)
+//            ]
             
             lineOne <- [
                 Height(1)

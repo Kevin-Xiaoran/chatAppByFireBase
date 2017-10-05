@@ -66,13 +66,13 @@ extension LoginViewController{
             Height(textFieldHeight)
         ]
         
-        textFieldBackView.addSubview(confirmedPasswordTextField)
-        confirmedPasswordTextField <- [
-            Top().to(passwordTextField, .bottom),
-            Left(FrameAndUiControllersSize.leftPadding),
-            Right(),
-            Height(textFieldHeight)
-        ]
+//        textFieldBackView.addSubview(confirmedPasswordTextField)
+//        confirmedPasswordTextField <- [
+//            Top().to(passwordTextField, .bottom),
+//            Left(FrameAndUiControllersSize.leftPadding),
+//            Right(),
+//            Height(textFieldHeight)
+//        ]
         
         textFieldBackView.addSubview(lineOne)
         lineOne <- [
@@ -90,13 +90,13 @@ extension LoginViewController{
             Height(1)
         ]
         
-        textFieldBackView.addSubview(lineThree)
-        lineThree <- [
-            Top().to(confirmedPasswordTextField, .top),
-            Left(FrameAndUiControllersSize.leftPadding),
-            Right(),
-            Height(1)
-        ]
+//        textFieldBackView.addSubview(lineThree)
+//        lineThree <- [
+//            Top().to(confirmedPasswordTextField, .top),
+//            Left(FrameAndUiControllersSize.leftPadding),
+//            Right(),
+//            Height(1)
+//        ]
     }
     
     func addingLoginAndRegisterButton(){

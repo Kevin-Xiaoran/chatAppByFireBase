@@ -36,10 +36,13 @@ extension ChatViewController{
                 })
                 
                 inputTextField.text = ""
+                inputTextField.resignFirstResponder()
                 self.scrollToBottom()
+                
             }
         }
         print("You pressed send button")
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -77,10 +80,12 @@ extension ChatViewController{
                     self.scrollToBottom()
                 }
                 
+                
             }, withCancel: nil)
             
         }, withCancel: nil)
     }
+    
     
     func getCellSizeBaseOnText(text: String) -> CGRect{
         let size = CGSize(width: 200, height: 1000)
@@ -94,6 +99,46 @@ extension ChatViewController{
         if lastItem >= 1{
             let indexPath: NSIndexPath = NSIndexPath.init(item: lastItem, section: 0)
             self.messageCollectionView.scrollToItem(at: indexPath as IndexPath, at: .bottom, animated: true)
+        }
+    }
+    
+    func keyBoardWillShow(note: Notification){
+        let viewFrame = view.frame.size
+        
+        //Get UserInfo
+        let userInfo = note.userInfo
+        
+        //Get keyBoardFrame
+        let keyBoardBounds = userInfo?[UIKeyboardFrameEndUserInfoKey] as! CGRect
+        let keyBoardHeight = keyBoardBounds.size.height
+        self.keyBoardHeight = keyBoardHeight
+        print("keyBoardHeight: \(keyBoardHeight)")
+        
+        //Get keyBoard raise up time
+        let keyBoardRaiseUpTime = userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        print("keyBoardRaiseUpTime: \(keyBoardRaiseUpTime)")
+        
+        UIView.animate(withDuration: keyBoardRaiseUpTime ) {
+            self.messageCollectionView.frame = CGRect(x: 0, y: -keyBoardHeight, width: viewFrame.width, height: viewFrame.height - 50)
+            
+            self.inputChatView.frame = CGRect(x: 0, y: viewFrame.height - keyBoardHeight - 50, width: viewFrame.width, height: 50)
+        }
+    }
+    
+    func keyBoardWillHide(note: Notification){
+        let viewFrame = view.frame.size
+        
+        //Get UserInfo
+        let userInfo = note.userInfo
+        
+        //Get keyBoard drop down time
+        let keyBoardDropDownTime = userInfo?[UIKeyboardAnimationDurationUserInfoKey] as! Double
+        print("keyBoardDropDownTime: \(keyBoardDropDownTime)")
+        
+        UIView.animate(withDuration: keyBoardDropDownTime ) {
+            self.messageCollectionView.frame = CGRect(x: 0, y: 0, width: viewFrame.width, height: viewFrame.height - 50)
+            
+            self.inputChatView.frame = CGRect(x: 0, y: viewFrame.height - 50, width: viewFrame.width, height: 50)
         }
     }
 }

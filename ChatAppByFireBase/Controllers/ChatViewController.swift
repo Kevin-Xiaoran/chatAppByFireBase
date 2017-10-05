@@ -14,6 +14,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
     
     var cellId = "cellId"
     var messages = [Message]()
+    var keyBoardHeight: CGFloat = 100.0
     
     var userData: [String: String] = [:]{
         didSet{
@@ -78,6 +79,14 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         return collectionView
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //Adding Observer for Keyboard so that the inputTextField can raise up and drop down depend on keyboard animation
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillShow(note: )), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyBoardWillHide(note: )), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +95,6 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         
         setUpMessageCollectionView()
         setUpInputView()
-        
     }
 
     func setUpInputView(){

@@ -194,6 +194,7 @@
 				TargetAttributes = {
 					C7771E571F7DD60C0020FC17 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = ZDQPJRG9H7;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -422,7 +423,9 @@
 			baseConfigurationReference = 81C0C19248C5D936BE560165 /* Pods-ChatAppByFireBase.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = ZDQPJRG9H7;
 				INFOPLIST_FILE = ChatAppByFireBase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Kairan.ChatAppByFireBase;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -435,7 +438,9 @@
 			baseConfigurationReference = 62FBF2E492462D4B7B6022FA /* Pods-ChatAppByFireBase.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = ZDQPJRG9H7;
 				INFOPLIST_FILE = ChatAppByFireBase/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Kairan.ChatAppByFireBase;
 				PRODUCT_NAME = "$(TARGET_NAME)";

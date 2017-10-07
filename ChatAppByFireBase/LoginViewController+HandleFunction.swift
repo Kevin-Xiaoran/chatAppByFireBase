@@ -134,9 +134,6 @@ extension LoginViewController: UINavigationControllerDelegate, UIImagePickerCont
                         }
                     })
                 }
-                
-                
-                
             }
         }
     }

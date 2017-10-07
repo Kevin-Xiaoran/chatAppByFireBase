@@ -84,7 +84,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             toRef.observeSingleEvent(of: .value, with: { (snapShot) in
                 if let userData = snapShot.value as? [String: String]{
                     
-                    cell.updateMessageCell(userName: userData["name"]!, userEmail: singleMessage.message!, userImage: userData["userImageUrl"]!, timeStamp: singleMessage.timeStamp!)
+                    if let message = singleMessage.message{
+                        cell.updateMessageCell(userName: userData["name"]!, userEmail: message, userImage: userData["userImageUrl"]!, timeStamp: singleMessage.timeStamp!)
+                    }else{
+                        cell.updateMessageCell(userName: userData["name"]!, userEmail: "You receiverd an image", userImage: userData["userImageUrl"]!, timeStamp: singleMessage.timeStamp!)
+                    }
+                    
                 }
             })
 

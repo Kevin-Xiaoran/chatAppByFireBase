@@ -13,6 +13,8 @@ import Kingfisher
 
 class ChatCollectionViewCell: UICollectionViewCell {
     
+    weak var chatViewController: ChatViewController?
+    
     let textLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = UIColor.clear
@@ -48,12 +50,22 @@ class ChatCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
+    
+    lazy var imageMessageImageView: MessageImageView = {
+        let imageView = MessageImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureForImageMessage)))
+        return imageView
+    }()
    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(bubbleView)
         contentView.addSubview(textLabel)
+        contentView.addSubview(imageMessageImageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -66,7 +78,6 @@ class ChatCollectionViewCell: UICollectionViewCell {
         if let uid = FIRAuth.auth()?.currentUser?.uid {
             if senderId == uid {
                 bubbleView.backgroundColor = self.tintColor
-                
                 
                 bubbleView <- [
                     Top(),
@@ -122,6 +133,73 @@ class ChatCollectionViewCell: UICollectionViewCell {
                 Left(FrameAndUiControllersSize.leftPadding).to(bubbleView, .left)
             ]
         }
+        
+        hideMessageImage()
+    }
+    
+    func updateImageCell(imageUrl: String, senderId: String, timeStamp: String){
+        let messageImageUrl = URL(string: imageUrl)
+        imageMessageImageView.kf.setImage(with: messageImageUrl)
+        imageMessageImageView.imageUrlString = imageUrl
+        imageMessageImageView.timeStamp = timeStamp
+        
+        if let uid = FIRAuth.auth()?.currentUser?.uid {
+            if senderId == uid {
+                imageMessageImageView <- [
+                    Top(),
+                    Bottom(),
+                    Right(FrameAndUiControllersSize.rightPadding*2 + 40),
+                    Height(120),
+                    Width(200)
+                ]
+                
+                chatPartnerImageView.removeFromSuperview()
+                contentView.addSubview(currentUserImageView)
+                currentUserImageView <- [
+                    Top(),
+                    Right(FrameAndUiControllersSize.rightPadding),
+                    Width(40),
+                    Height(40)
+                ]
+                
+            }else{
+                imageMessageImageView <- [
+                    Top(),
+                    Bottom(),
+                    Left(FrameAndUiControllersSize.leftPadding*2 + 40),
+                    Height(120),
+                    Width(200)
+                ]
+                
+                currentUserImageView.removeFromSuperview()
+                contentView.addSubview(chatPartnerImageView)
+                chatPartnerImageView <- [
+                    Top(),
+                    Left(FrameAndUiControllersSize.rightPadding),
+                    Width(40),
+                    Height(40)
+                ]
+            }
+        }
+        
+        showMessageImage()
+    }
+    
+    func showMessageImage(){
+        bubbleView.isHidden = true
+        textLabel.isHidden = true
+        imageMessageImageView.isHidden = false
     }
 
+    func hideMessageImage(){
+        bubbleView.isHidden = false
+        textLabel.isHidden = false
+        imageMessageImageView.isHidden = true
+    }
+    
+    func tapGestureForImageMessage(){
+        if let imageUrl = imageMessageImageView.imageUrlString, let timeStamp = imageMessageImageView.timeStamp{
+            chatViewController?.pushToDetailImageViewController(imageUrlString: imageUrl, timeStamp: timeStamp)
+        }
+    }
 }

@@ -20,6 +20,8 @@ class messageTableViewCell: UserListTableViewCell {
         return label
     }()
     
+    
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -28,7 +30,6 @@ class messageTableViewCell: UserListTableViewCell {
             Top(5),
             Right(FrameAndUiControllersSize.rightPadding)
         ]
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

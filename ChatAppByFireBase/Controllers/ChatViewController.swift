@@ -10,7 +10,7 @@ import UIKit
 import EasyPeasy
 import Firebase
 
-class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource{
+class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     var cellId = "cellId"
     var messages = [Message]()
@@ -177,10 +177,17 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         if let singleMessage = singleMessageModel.message{
             
             //Cant get chatParters so far because its gonna invoke server for several times and its gonna refresh cell for many times
+            //For now, red icon userImage = chatPartner
+            //         blue icon userImage = currentUser
+            
             cell.updateCell(message: singleMessage, bubbleViewWith: self.getCellSizeBaseOnText(text: singleMessage).width + 35, senderId: singleMessageModel.fromId!, currentUserUrl: "")
+            cell.chatViewController = self
+            
+        }else if let imageUrlString = singleMessageModel.imageUrl, let timeStamp = singleMessageModel.timeStamp{
+            
+            cell.updateImageCell(imageUrl: imageUrlString, senderId: singleMessageModel.fromId!, timeStamp: timeStamp)
+            cell.chatViewController = self
         }
-        
-        
         
         return cell
     }
@@ -190,6 +197,8 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
         
         if let singleMessage = messages[indexPath.row].message{
             height = getCellSizeBaseOnText(text: singleMessage).height + 20
+        }else{//
+            height = 120
         }
         
         return CGSize(width: view.frame.size.width, height: height)

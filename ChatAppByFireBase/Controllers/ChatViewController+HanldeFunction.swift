@@ -56,7 +56,68 @@ extension ChatViewController{
     }
     
     func sendImageButtonPressed(){
+        let imagePickerView = UIImagePickerController()
+        imagePickerView.delegate = self
+        imagePickerView.allowsEditing = true
+        self.present(imagePickerView, animated: true, completion: nil)
+        
         print("You pressed send image button")
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        var selectedImageOptional: UIImage?
+        
+        if let editedImg = info[UIImagePickerControllerEditedImage] as? UIImage{
+            selectedImageOptional = editedImg
+        }else if let originalImg = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            selectedImageOptional = originalImg
+        }
+        
+        if let selectedImage = selectedImageOptional{
+            uploadImageToFireBase(image: selectedImage)
+        }
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func uploadImageToFireBase(image: UIImage){
+        let imageName = NSUUID().uuidString
+        let ref = FIRStorage.storage().reference().child("message-image").child("\(imageName).jpeg")
+        
+        if let uploadData = UIImageJPEGRepresentation(image, 0.2){
+            ref.put(uploadData, metadata: nil) { (metaData, error) in
+                
+                if let uploadImageUrl = metaData?.downloadURL()?.absoluteString{
+                    self.sendImageMessageToFirebase(imageUrl: uploadImageUrl)
+                }
+            }
+        }
+    }
+    
+    func sendImageMessageToFirebase(imageUrl: String){
+        let ref = FIRDatabase.database().reference().child("message")
+        let childMessageId = ref.childByAutoId()
+        
+        let toId = self.userData["uuid"]
+        let fromId = FIRAuth.auth()?.currentUser?.uid
+        let timeStamp = String(NSDate().timeIntervalSince1970)
+        let valueDictonary = ["imageUrl": imageUrl, "toId": toId, "fromId": fromId, "timeStamp": timeStamp] as! [String: String]
+        
+        childMessageId.updateChildValues(valueDictonary, withCompletionBlock: { (error, ref) in
+            if error != nil{
+                print((error?.localizedDescription)!)
+                return
+            }
+            
+            let senderReference = FIRDatabase.database().reference().child("user-message").child(fromId!).child(toId!)
+            let childId = childMessageId.key
+            senderReference.updateChildValues([childId: 1])
+            
+            let receiverReference = FIRDatabase.database().reference().child("user-message").child(toId!).child(fromId!)
+            receiverReference.updateChildValues([childId: 1])
+        })
+        
+        self.scrollToBottom()
     }
     
     func getNewMessageFromFirebase(){
@@ -142,5 +203,12 @@ extension ChatViewController{
             
             self.inputChatView.frame = CGRect(x: 0, y: viewFrame.height - 50, width: viewFrame.width, height: 50)
         }
+    }
+    
+    func pushToDetailImageViewController(imageUrlString: String, timeStamp: String){
+        let detailImageViewController = DetailImageViewController()
+        detailImageViewController.imageUrlString = imageUrlString
+        detailImageViewController.timeStamp = timeStamp
+        _ = self.navigationController?.pushViewController(detailImageViewController, animated: true)
     }
 }

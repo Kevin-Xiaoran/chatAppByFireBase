@@ -10,6 +10,8 @@ import UIKit
 import EasyPeasy
 import Firebase
 import Kingfisher
+import AVFoundation
+import MobileCoreServices
 
 class ChatCollectionViewCell: UICollectionViewCell {
     
@@ -54,6 +56,7 @@ class ChatCollectionViewCell: UICollectionViewCell {
     lazy var imageMessageImageView: MessageImageView = {
         let imageView = MessageImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 15
         imageView.clipsToBounds = true
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureForImageMessage)))
@@ -149,8 +152,7 @@ class ChatCollectionViewCell: UICollectionViewCell {
                     Top(),
                     Bottom(),
                     Right(FrameAndUiControllersSize.rightPadding*2 + 40),
-                    Height(120),
-                    Width(200)
+                    Left(UIScreen.main.bounds.size.width - FrameAndUiControllersSize.rightPadding*2 - 40 - 200),                    Width(200)
                 ]
                 
                 chatPartnerImageView.removeFromSuperview()
@@ -167,7 +169,7 @@ class ChatCollectionViewCell: UICollectionViewCell {
                     Top(),
                     Bottom(),
                     Left(FrameAndUiControllersSize.leftPadding*2 + 40),
-                    Height(120),
+                    Right(UIScreen.main.bounds.size.width - FrameAndUiControllersSize.leftPadding*2 - 40 - 200),
                     Width(200)
                 ]
                 
@@ -200,6 +202,60 @@ class ChatCollectionViewCell: UICollectionViewCell {
     func tapGestureForImageMessage(){
         if let imageUrl = imageMessageImageView.imageUrlString, let timeStamp = imageMessageImageView.timeStamp{
             chatViewController?.pushToDetailImageViewController(imageUrlString: imageUrl, timeStamp: timeStamp)
+        }
+    }
+    
+    func updateVedioMessageCell(vedioUrl: URL, senderId: String, timeStamp: String){
+        let asset = AVAsset(url: vedioUrl)
+        let assetImageGenerator = AVAssetImageGenerator(asset: asset)
+        
+        do{
+            let coverImage = try assetImageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            imageMessageImageView.image = UIImage(cgImage: coverImage)
+            
+            if let uid = FIRAuth.auth()?.currentUser?.uid {
+                if senderId == uid {
+                    imageMessageImageView <- [
+                        Top(),
+                        Bottom(),
+                        Right(FrameAndUiControllersSize.rightPadding*2 + 40),
+                        Left(UIScreen.main.bounds.size.width - FrameAndUiControllersSize.rightPadding*2 - 40 - 200),
+                        Width(200)
+                    ]
+                    
+                    chatPartnerImageView.removeFromSuperview()
+                    contentView.addSubview(currentUserImageView)
+                    currentUserImageView <- [
+                        Top(),
+                        Right(FrameAndUiControllersSize.rightPadding),
+                        Width(40),
+                        Height(40)
+                    ]
+                    
+                }else{
+                    imageMessageImageView <- [
+                        Top(),
+                        Bottom(),
+                        Left(FrameAndUiControllersSize.leftPadding*2 + 40),
+                        Right(UIScreen.main.bounds.size.width - FrameAndUiControllersSize.leftPadding*2 - 40 - 200),
+                        Width(200)
+                    ]
+                    
+                    currentUserImageView.removeFromSuperview()
+                    contentView.addSubview(chatPartnerImageView)
+                    chatPartnerImageView <- [
+                        Top(),
+                        Left(FrameAndUiControllersSize.rightPadding),
+                        Width(40),
+                        Height(40)
+                    ]
+                }
+            }
+            
+            showMessageImage()
+            
+        }catch let error{
+            print(error)
         }
     }
 }

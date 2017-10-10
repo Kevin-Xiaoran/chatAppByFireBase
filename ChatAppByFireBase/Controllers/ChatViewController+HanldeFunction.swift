@@ -8,6 +8,10 @@
 
 import UIKit
 import Firebase
+import EasyPeasy
+import AVFoundation
+import MobileCoreServices
+import SVProgressHUD
 
 extension ChatViewController{
     func sendButtonPressed(){
@@ -39,7 +43,8 @@ extension ChatViewController{
                 })
                 
                 inputTextField.text = ""
-                inputTextField.resignFirstResponder()
+//                inputTextField.resignFirstResponder()
+                self.didSendMessage = true
                 self.scrollToBottom()
                 
             }
@@ -59,6 +64,7 @@ extension ChatViewController{
         let imagePickerView = UIImagePickerController()
         imagePickerView.delegate = self
         imagePickerView.allowsEditing = true
+        imagePickerView.mediaTypes = [kUTTypeMovie as String, kUTTypeImage as String]
         self.present(imagePickerView, animated: true, completion: nil)
         
         print("You pressed send image button")
@@ -67,14 +73,40 @@ extension ChatViewController{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var selectedImageOptional: UIImage?
         
-        if let editedImg = info[UIImagePickerControllerEditedImage] as? UIImage{
-            selectedImageOptional = editedImg
-        }else if let originalImg = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            selectedImageOptional = originalImg
-        }
-        
-        if let selectedImage = selectedImageOptional{
-            uploadImageToFireBase(image: selectedImage)
+        if let vedioUrl = info[UIImagePickerControllerMediaURL] as? URL{
+            let fileName = "vedioFile"
+            let ref = FIRStorage.storage().reference().child("message-vedios").child(fileName).putFile(vedioUrl, metadata: nil, completion: { (metaData, error) in
+                if error != nil{
+                    print((error?.localizedDescription)!)
+                    return
+                }
+                
+                if let vedioUrlString = metaData?.downloadURL()?.absoluteString{
+                    self.uploadVedioToFireBase(vedioUrlString: vedioUrlString)
+                    
+                }
+            })
+            
+            ref.observe(.progress, handler: { (snapShot) in
+                if let progressFloat = snapShot.progress?.fractionCompleted{
+                    SVProgressHUD.showProgress(Float(progressFloat))
+                }
+            })
+            
+            ref.observe(.success, handler: { (snapShot) in
+                SVProgressHUD.showInfo(withStatus: "Upload Successfully")
+                SVProgressHUD.dismiss(withDelay: 1.0)
+            })
+        }else{
+            if let editedImg = info[UIImagePickerControllerEditedImage] as? UIImage{
+                selectedImageOptional = editedImg
+            }else if let originalImg = info[UIImagePickerControllerOriginalImage] as? UIImage{
+                selectedImageOptional = originalImg
+            }
+            
+            if let selectedImage = selectedImageOptional{
+                uploadImageToFireBase(image: selectedImage)
+            }
         }
         
         self.dismiss(animated: true, completion: nil)
@@ -92,6 +124,34 @@ extension ChatViewController{
                 }
             }
         }
+    }
+    
+    private func uploadVedioToFireBase(vedioUrlString: String){
+        let ref = FIRDatabase.database().reference().child("message")
+        let childMessageId = ref.childByAutoId()
+        
+        let toId = self.userData["uuid"]
+        let fromId = FIRAuth.auth()?.currentUser?.uid
+        let timeStamp = String(NSDate().timeIntervalSince1970)
+        let valueDictonary = ["vedioUrl": vedioUrlString, "toId": toId, "fromId": fromId, "timeStamp": timeStamp] as! [String: String]
+        
+        childMessageId.updateChildValues(valueDictonary, withCompletionBlock: { (error, ref) in
+            if error != nil{
+                print((error?.localizedDescription)!)
+                return
+            }
+            
+            let senderReference = FIRDatabase.database().reference().child("user-message").child(fromId!).child(toId!)
+            let childId = childMessageId.key
+            senderReference.updateChildValues([childId: 1])
+            
+            let receiverReference = FIRDatabase.database().reference().child("user-message").child(toId!).child(fromId!)
+            receiverReference.updateChildValues([childId: 1])
+            
+            self.didSendMessage = false
+        })
+        
+        self.scrollToBottom()
     }
     
     func sendImageMessageToFirebase(imageUrl: String){
@@ -115,6 +175,8 @@ extension ChatViewController{
             
             let receiverReference = FIRDatabase.database().reference().child("user-message").child(toId!).child(fromId!)
             receiverReference.updateChildValues([childId: 1])
+            
+            self.didSendMessage = false
         })
         
         self.scrollToBottom()
@@ -143,6 +205,24 @@ extension ChatViewController{
                     self.scrollToBottom()
                 }
                 
+                if self.didSendMessage{
+                    self.inputChatView <- [
+                        Bottom(self.keyBoardHeight),
+                        Left(),
+                        Right(),
+                        Width(self.view.frame.size.width),
+                        Height(50)
+                    ]
+                    
+                    self.messageCollectionView <- [
+                        Top(),
+                        Left(),
+                        Right(),
+                        Height(self.view.frame.size.height - self.keyBoardHeight - 50)
+                    ]
+                    
+                }
+                
                 
             }, withCancel: nil)
             
@@ -158,6 +238,7 @@ extension ChatViewController{
     }
 
     func scrollToBottom(){
+        print(self.messageCollectionView.frame.size.height)
         let lastItem = collectionView(self.messageCollectionView, numberOfItemsInSection: 0) - 1
         if lastItem >= 1{
             let indexPath: NSIndexPath = NSIndexPath.init(item: lastItem, section: 0)
@@ -182,9 +263,25 @@ extension ChatViewController{
         print("keyBoardRaiseUpTime: \(keyBoardRaiseUpTime)")
         
         UIView.animate(withDuration: keyBoardRaiseUpTime ) {
-            self.messageCollectionView.frame = CGRect(x: 0, y: -keyBoardHeight, width: viewFrame.width, height: viewFrame.height - 50)
+            self.messageCollectionView.frame = CGRect(x: 0, y: 0, width: viewFrame.width, height: viewFrame.height - self.keyBoardHeight - 50)
             
-            self.inputChatView.frame = CGRect(x: 0, y: viewFrame.height - keyBoardHeight - 50, width: viewFrame.width, height: 50)
+            self.inputChatView <- [
+                Bottom(self.keyBoardHeight),
+                Left(),
+                Right(),
+                Width(viewFrame.width),
+                Height(50)
+            ]
+            
+            self.messageCollectionView <- [
+                Top(),
+                Left(),
+                Right(),
+                Height(viewFrame.height - self.keyBoardHeight - 50)
+            ]
+            
+            self.scrollToBottom()
+            print("When keyboard shows: \(self.messageCollectionView.frame.size.height)")
         }
     }
     
@@ -199,9 +296,24 @@ extension ChatViewController{
         print("keyBoardDropDownTime: \(keyBoardDropDownTime)")
         
         UIView.animate(withDuration: keyBoardDropDownTime ) {
-            self.messageCollectionView.frame = CGRect(x: 0, y: 0, width: viewFrame.width, height: viewFrame.height - 50)
+        
+            self.inputChatView <- [
+                Bottom(),
+                Left(),
+                Right(),
+                Width(viewFrame.width),
+                Height(50)
+            ]
             
-            self.inputChatView.frame = CGRect(x: 0, y: viewFrame.height - 50, width: viewFrame.width, height: 50)
+            self.messageCollectionView <- [
+                Top(),
+                Left(),
+                Right(),
+                Height(viewFrame.height - 50)
+            ]
+            
+            self.scrollToBottom()
+            print("When keyboard hides: \(self.messageCollectionView.frame.size.height)")
         }
     }
     
@@ -209,6 +321,6 @@ extension ChatViewController{
         let detailImageViewController = DetailImageViewController()
         detailImageViewController.imageUrlString = imageUrlString
         detailImageViewController.timeStamp = timeStamp
-        _ = self.navigationController?.pushViewController(detailImageViewController, animated: true)
+        _ = self.navigationController?.pushViewController(detailImageViewController, animated: false)
     }
 }

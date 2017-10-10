@@ -15,6 +15,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
     var cellId = "cellId"
     var messages = [Message]()
     var keyBoardHeight: CGFloat = 100.0
+    var didSendMessage: Bool = false
     
     var userData: [String: String] = [:]{
         didSet{
@@ -158,7 +159,7 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
             Top(),
             Left(),
             Right(),
-            Bottom(50)
+            Height(self.view.frame.size.height - 50)
         ]
     }
     
@@ -187,6 +188,10 @@ class ChatViewController: UIViewController, UITextFieldDelegate, UICollectionVie
             
             cell.updateImageCell(imageUrl: imageUrlString, senderId: singleMessageModel.fromId!, timeStamp: timeStamp)
             cell.chatViewController = self
+            
+        }else if let vedioUrl = singleMessageModel.vedioUrl, let timeStamp = singleMessageModel.timeStamp{
+            
+            cell.updateVedioMessageCell(vedioUrl: URL(string: vedioUrl)!, senderId: singleMessageModel.fromId!, timeStamp: timeStamp)
         }
         
         return cell

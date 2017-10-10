@@ -16,6 +16,7 @@ class Message: NSObject {
     var timeStamp: String?
     var toId: String?
     var imageUrl: String?
+    var vedioUrl: String?
     
     //if user A send message to user B
     //In user A view, the receiver should be user B

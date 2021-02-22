@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Order Review View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="OrderReviewViewController" customModule="RatingStarDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3kY-hw-J4v" userLabel="Close Button">
+                                <rect key="frame" x="333" y="33.5" width="26" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="VCO-Tg-Pja"/>
+                                    <constraint firstAttribute="height" constant="26" id="dHS-Q0-KBL"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZGg-IU-RoQ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enjoy Your Service?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtT-4k-vta">
+                                <rect key="frame" x="112" y="36" width="150" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order ID A212312" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oIG-4T-h1c">
+                                <rect key="frame" x="120" y="134" width="135" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate your order by taping the star " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oiQ-Nn-51P">
+                                <rect key="frame" x="80" y="163" width="215" height="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b34-Lw-yOP" customClass="CosmosView" customModule="Cosmos">
+                                <rect key="frame" x="91" y="212" width="192" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="D39-ew-vOe"/>
+                                    <constraint firstAttribute="width" constant="192" id="ns9-R7-s2n"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="rating">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="star_blue"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMM-On-Tcq">
+                                <rect key="frame" x="107.5" y="308" width="159" height="42"/>
+                                <color key="backgroundColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="DFC-yZ-lnB"/>
+                                    <constraint firstAttribute="width" constant="159" id="ogU-aw-COI"/>
+                                </constraints>
+                                <state key="normal" title="SUBMIT">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="x0d-Dx-wxN"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="oIG-4T-h1c" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="3ty-z1-Kwu"/>
+                            <constraint firstItem="XtT-4k-vta" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="4bM-R8-gBs"/>
+                            <constraint firstItem="hMM-On-Tcq" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="AsP-bb-4um"/>
+                            <constraint firstItem="XtT-4k-vta" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="D4J-zp-YKH"/>
+                            <constraint firstItem="oIG-4T-h1c" firstAttribute="top" secondItem="XtT-4k-vta" secondAttribute="bottom" constant="77" id="IMo-Oy-XM1"/>
+                            <constraint firstItem="oiQ-Nn-51P" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="LJP-ys-dvE"/>
+                            <constraint firstItem="b34-Lw-yOP" firstAttribute="top" secondItem="oiQ-Nn-51P" secondAttribute="bottom" constant="32" id="gWx-eT-0Bf"/>
+                            <constraint firstItem="hMM-On-Tcq" firstAttribute="top" secondItem="b34-Lw-yOP" secondAttribute="bottom" constant="64" id="gyh-Ap-Hhz"/>
+                            <constraint firstItem="b34-Lw-yOP" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="hLU-z8-zHD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3kY-hw-J4v" secondAttribute="trailing" constant="16" id="kSu-Ea-InX"/>
+                            <constraint firstItem="oiQ-Nn-51P" firstAttribute="top" secondItem="oIG-4T-h1c" secondAttribute="bottom" constant="8" id="mhN-XQ-vSd"/>
+                            <constraint firstItem="3kY-hw-J4v" firstAttribute="centerY" secondItem="XtT-4k-vta" secondAttribute="centerY" id="uMr-WA-H2W"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="starRatingView" destination="b34-Lw-yOP" id="6gx-Gw-N2a"/>
+                        <segue destination="u8f-XW-nfb" kind="show" identifier="showDetailRatingView" id="dhi-YU-7xk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="117.59999999999999" y="117.39130434782609"/>
+        </scene>
+        <!--Rating Detail View Controller-->
+        <scene sceneID="yn5-ur-IBT">
+            <objects>
+                <viewController id="u8f-XW-nfb" customClass="RatingDetailViewController" customModule="RatingStarDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Ii-cH-tsb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z1w-5g-YQA" userLabel="Close Button">
+                                <rect key="frame" x="333" y="33" width="26" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="O6P-oK-RyC"/>
+                                    <constraint firstAttribute="height" constant="26" id="q9F-Qu-rC6"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="close"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="u8f-XW-nfb" eventType="touchUpInside" id="2ee-BX-oow"/>
+                                    <action selector="closeButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="932-IC-UMk"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enjoy Your Service?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JG6-qq-NV7">
+                                <rect key="frame" x="112" y="36" width="150" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate your order by taping the star " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ao-cA-9aT">
+                                <rect key="frame" x="80" y="134" width="215" height="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eDb-JZ-C0S" customClass="CosmosView" customModule="Cosmos">
+                                <rect key="frame" x="91" y="183" width="192" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="N2G-yC-DR4"/>
+                                    <constraint firstAttribute="width" constant="192" id="hU2-P9-VVr"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="star_blue"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate your order by taping the star " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3SU-iT-29u">
+                                <rect key="frame" x="80" y="279" width="215" height="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dIh-0a-1Ml" customClass="CosmosView" customModule="Cosmos">
+                                <rect key="frame" x="91" y="328" width="192" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="192" id="VbO-Nb-qhT"/>
+                                    <constraint firstAttribute="height" constant="32" id="vHL-QQ-4qm"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starSize">
+                                        <real key="value" value="32"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="starMargin">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="filledImage" value="star_blue"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="emptyImage" value="star_empty"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Say anything to our service and restaurant’s food" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Pk-Mx-92t">
+                                <rect key="frame" x="32" y="424" width="317" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tell us your thought…" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-7m-NXA">
+                                <rect key="frame" x="32" y="457" width="343" height="17"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="customerMessageTextField:" destination="u8f-XW-nfb" eventType="editingDidEnd" id="Ger-Xz-4v8"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8a-wF-p88">
+                                <rect key="frame" x="108" y="538" width="159" height="42"/>
+                                <color key="backgroundColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="Q5s-l9-36i"/>
+                                    <constraint firstAttribute="width" constant="159" id="h0T-Wj-Ug6"/>
+                                </constraints>
+                                <state key="normal" title="SUBMIT">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TIR-5Q-YTg"/>
+                                    <action selector="submitButtonPressed:" destination="u8f-XW-nfb" eventType="touchUpInside" id="eHd-Bw-4sV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="5Pk-Mx-92t" firstAttribute="leading" secondItem="OB8-Rt-3BG" secondAttribute="leading" constant="32" id="2Wt-QP-GmQ"/>
+                            <constraint firstItem="3SU-iT-29u" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="D7H-bW-qEf"/>
+                            <constraint firstItem="b8a-wF-p88" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="DFC-GY-xRg"/>
+                            <constraint firstItem="OB8-Rt-3BG" firstAttribute="trailing" secondItem="VhR-7m-NXA" secondAttribute="trailing" id="FfE-nG-Zv0"/>
+                            <constraint firstItem="JG6-qq-NV7" firstAttribute="top" secondItem="OB8-Rt-3BG" secondAttribute="top" constant="16" id="LLC-N2-FPy"/>
+                            <constraint firstItem="eDb-JZ-C0S" firstAttribute="top" secondItem="9Ao-cA-9aT" secondAttribute="bottom" constant="32" id="M4Y-av-xs3"/>
+                            <constraint firstItem="eDb-JZ-C0S" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="Mk8-S6-Tm0"/>
+                            <constraint firstItem="VhR-7m-NXA" firstAttribute="top" secondItem="5Pk-Mx-92t" secondAttribute="bottom" constant="16" id="PPL-3f-zpa"/>
+                            <constraint firstItem="JG6-qq-NV7" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="RvQ-HZ-wXW"/>
+                            <constraint firstItem="5Pk-Mx-92t" firstAttribute="top" secondItem="dIh-0a-1Ml" secondAttribute="bottom" constant="64" id="Weo-IB-fZJ"/>
+                            <constraint firstItem="dIh-0a-1Ml" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="Y9I-YC-O16"/>
+                            <constraint firstItem="OB8-Rt-3BG" firstAttribute="trailing" secondItem="Z1w-5g-YQA" secondAttribute="trailing" constant="16" id="ZhQ-Ts-ogA"/>
+                            <constraint firstItem="b8a-wF-p88" firstAttribute="top" secondItem="VhR-7m-NXA" secondAttribute="bottom" constant="64" id="crG-PR-ABR"/>
+                            <constraint firstItem="3SU-iT-29u" firstAttribute="top" secondItem="eDb-JZ-C0S" secondAttribute="bottom" constant="64" id="eZZ-H4-nJ3"/>
+                            <constraint firstItem="dIh-0a-1Ml" firstAttribute="top" secondItem="3SU-iT-29u" secondAttribute="bottom" constant="32" id="evr-Nl-zu8"/>
+                            <constraint firstItem="9Ao-cA-9aT" firstAttribute="top" secondItem="JG6-qq-NV7" secondAttribute="bottom" constant="77" id="hX0-RE-FLI"/>
+                            <constraint firstItem="9Ao-cA-9aT" firstAttribute="centerX" secondItem="OB8-Rt-3BG" secondAttribute="centerX" id="ine-bf-jT1"/>
+                            <constraint firstItem="Z1w-5g-YQA" firstAttribute="centerY" secondItem="JG6-qq-NV7" secondAttribute="centerY" id="rVQ-eu-2cL"/>
+                            <constraint firstItem="VhR-7m-NXA" firstAttribute="leading" secondItem="5Pk-Mx-92t" secondAttribute="leading" id="v4P-wD-2st"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="OB8-Rt-3BG"/>
+                    </view>
+                    <connections>
+                        <outlet property="customerMessageTextField" destination="VhR-7m-NXA" id="0JW-mh-zU2"/>
+                        <outlet property="fodServiceRatingView" destination="eDb-JZ-C0S" id="yBf-4A-cxL"/>
+                        <outlet property="restaurantRatingView" destination="dIh-0a-1Ml" id="dFK-v7-zus"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Juh-Wy-rSM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="873" y="117"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="close" width="26" height="26"/>
+        <image name="star_blue" width="32" height="29"/>
+        <image name="star_empty" width="32" height="29"/>
+    </resources>
+</document>
